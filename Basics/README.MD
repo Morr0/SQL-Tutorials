@@ -80,7 +80,7 @@ What if I now try to only input in the `Name` column as follows:
 INSERT INTO "Student"(Name) VALUES ('Mike');
 ```
 
-An error will occur, saying `Age` cannot be `NULL` and so here is where the RDBMS does it's checkings.
+An error will occur, saying `Age` cannot be `NULL` and so here is where the RDBMS does it's checkings we specified above.
 
 By now we may want to comment on the code we've written, it is very easy just as below:
 ```sql
@@ -106,7 +106,7 @@ DELETE FROM "Student";
 SELECT * FROM "Student";
 ```
 
-Ooh, nothing is left, it deletes everything, which is dangerous, maybe I want students with let's say of age 12. I need to first re-insert some data to then delete.
+Ooh, nothing is left, it deletes everything, which is dangerous, maybe I want students with let's say age 12 be deleted. I need to first re-insert some data to then delete.
 ```sql
 DELETE FROM "Student" WHERE Age = 12;
 ```
@@ -119,6 +119,11 @@ DROP TABLE Student;
 ```
 
 ### Conclusion:
-This has been a basic look on SQL, it is a rich language that keeps evolving, multiple months of study will not fulfill the combinations of using it. Just like any other programming language, learning never stops. 
+This has been a basic look on SQL, it is a rich language that keeps evolving. Multiple months of study will not fulfill the combinations of using it. Just like any other programming language, learning never stops. 
 
 Most SQL commands are self-explanatory due to historical reasons.
+
+All code used here:
+https://github.com/Morr0/SQL-Tutorials/blob/main/Basics/sql.sql
+
+Thanks for reading through this.
