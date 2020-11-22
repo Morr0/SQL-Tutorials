@@ -33,4 +33,24 @@ Note it is this easy. The `Id` column is an `INT`. You cannot add an `IDENTITY` 
 Another thing is that by adding a primary key to an existing table, all the existing records must be unique on that column in value or else will fail.
 
 ### Adding foreign keys:
-Will add a **one to many** relationship where one student can have multiple classes.
+Will make a simple one-to-one relationship. Let's say a student can only have one class and one class can only have one student, that is a one to one. Since I have created the tables, I will just add new columns to one table. **Note here it is a design decison, I will not relate to each table from the other**. Will add the student id to the class table.
+```sql
+ALTER TABLE Class ADD StudentId INT UNIQUE FOREIGN KEY REFERENCES Student(Id);
+```
+
+Or for a new table like so:
+```sql
+CREATE TABLE Class(
+	Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	Name VARCHAR(32) NOT NULL,
+	StudentId INT UNIQUE FOREIGN KEY REFERENCES Student(Id)
+);
+```
+
+Now we can try adding new classes for the same student and will get an error because of the `UNIQUE` constraint. It makes sure that this is a true 1-to-1 relationship.
+
+Moving on to one-to-many relationships, the `UNIQUE` keyword does not make sense and taking it out we would be able to have 1 student in many classes. That's all.
+
+What if we want a many-to-many relationship, where many students can have many classes and vice versa, while this is the real life scenario, this is a design decison. The most effective way to tackle this with minimum data redundancy is to use a [Junction table](https://en.wikipedia.org/wiki/Associative_entity).
+
+**Why bother with a foreign key now that we see how it works?** Becuase of the way it is used, RDBMSs have `relation` as their first word. Then let's say you just added a column without adding the constraint, how will you check for integrity. How can you be sure that a specific record exists? You would have to check right? Well the engine does that for you when adding a foreign key constraint and won't allow the insertion of non-existent record Id in the foreign table. Cool right? It gets cooler, let's say the record in the primary table got deleted, what happens now? Without a foreign key constraint nothing will happen, with it you can specify a `ON DELETE` property to say whether to delete the foreign records, set them null or other options... Now think of the power that exists!
