@@ -1,0 +1,36 @@
+SELECT RAND();
+
+SELECT COUNT(*) AS 'No. of students' FROM Student;
+
+CREATE TABLE Numbers(
+	Number INT NOT NULL
+);
+
+INSERT INTO Numbers VALUES(RAND() * 1000);
+INSERT INTO Numbers VALUES(RAND() * 1000);
+INSERT INTO Numbers VALUES(RAND() * 1000);
+INSERT INTO Numbers VALUES(RAND() * 1000);
+INSERT INTO Numbers VALUES(RAND() * 1000);
+INSERT INTO Numbers VALUES(RAND() * 1000);
+
+SELECT AVG(Number) FROM Numbers;
+
+SELECT AVG(Number) AS Average, MIN(Number) AS Minimum, MAX(Number) As Maximum FROM Numbers;
+GO
+
+CREATE FUNCTION REPORT(@Number AS INT)
+RETURNS INT
+AS
+BEGIN
+
+RETURN @Number * 10
+
+END;
+GO
+
+SELECT dbo.REPORT(10);
+
+SELECT dbo.REPORT(Number) FROM Numbers;
+
+DROP FUNCTION dbo.REPORT;
+
