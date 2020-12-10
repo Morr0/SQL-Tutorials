@@ -34,3 +34,63 @@ END
 An if statement was just used to check the condition and a `BREAK` statement broke out. Now what if this `BREAK` keyword was in a loop (inner-loop) that is in another loop (outer-loop). Then this inner-loop will break to the outer-loop and not exit both or however many that exist.
 
 To skip to the next loop iteration is very simple. Just the use `CONTINUE` keyword.
+
+### Constraints:
+`PRIMARY KEY` is an example of a constraint, a constraint is basically a feature to column. This specific constraint makes a column the primary key of a table. Others do exist. The list is:
+- PRIMARY KEY
+- FORIEGN KEY
+- CHECK
+- UNIQUE
+- NULL
+- NOT NULL
+- DEFAULT
+- INDEX
+- IDENTITY (SQL Server)
+  
+`INDEX` will not be covered in this article. `PRIMARY KEY` and `FORIEGN KEY` have been covered in a previous article of mine: https://www.ramihikmat.net/article/2020/sql:-primary-keys-through-to-foreign-ones-then-joining-tables
+
+The `NULL` and `NOT NULL` constraints can be easily used as follows when defining a table:
+```sql
+CREATE TABLE Sample(
+	SampleNum BIGINT NOT NULL,
+	SecondNum BIGINT NULL
+);
+```
+
+The `DEFAULT` constraint adds a default value if nothing was provided as follows:
+```sql
+CREATE TABLE Sample(
+	SampleString CHAR(20) DEFAULT 'Default Value'
+);
+```
+
+The more customized constraint and beloved one, `CHECK` is basically a [predicate](https://en.wikipedia.org/wiki/Predicate_(mathematical_logic)), if not true will cause an error. It is used as follows:
+```sql
+CREATE TABLE Sample(
+	SampleNum INT CHECK(SampleNum > 2500)
+);
+```
+
+This will make sure that the column `SampleNum`'s value is greater than 2500.
+
+A more general constraint syntax is the one below where it is not specific to any column but is table wide:
+```sql
+CREATE TABLE Numbers(
+	Number INT,
+	Number2 INT,
+	CONSTRAINT PassCriteria CHECK(Number > 50 AND Number2 = 10)
+);
+```
+
+Now I present an interesting use, more often than not when designing your system evolves with time and so you may want to add a new constraint. Adding a new constraint will involve applying it to all existing records, it will not add it when the predicate falls and an error is the result. You can either store the old data in another table or use the `NOCHECK` keyword.
+```sql
+CREATE TABLE Numbers(
+	Number INT
+);
+
+-- Insert some
+
+ALTER TABLE Numbers WITH NOCHECK ADD CONSTRAINT Condition CHECK(Number >= 100);
+```
+
+Note the `WITH NOCHECK` was placed at the front of the constraint due to SQL Server syntax however for you RDBMS it may be different. The same way `NOCHECK` was used, you can easily use `CHECK`. Although `CHECK` is the default on my system, you can configure it depending on the RDBMS.
