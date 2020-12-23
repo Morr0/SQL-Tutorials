@@ -72,6 +72,22 @@ WHERE WasInvolvedInFight = 1;
 
 Now we add a new column `WasInvolvedInFight` and make a new non-clustered index with a `WHERE` condition, whereby to only index the column where the value is equal to the condition. The condition can include other columns that are not indexed here. That is all a filtered index is.
 
+### Include index:
+This is a normal index that can include other columns with it, if you are certain you will lookup another column using this index then you can include it inside the index:
+```sql
+CREATE NONCLUSTERED INDEX WasInvolvedInFightIndex 
+ON Student(WasInvolvedInFight)
+INCLUDE (Id)
+```
+
+Above, instead of reading the `Id` column from the clustered record, it will be read here from the index and as such a performance improvment. Excitement does not stop there, look below you can also make an included index be **filtered**:
+```sql
+CREATE NONCLUSTERED INDEX WasInvolvedInFightIndex 
+ON Student(WasInvolvedInFight)
+INCLUDE (Id)
+WHERE WasInvolvedInFight = 1 AND LastMark >= 98;
+```
+
 ### Conclusion:
 Now other types of indexes do exist in SQL Server such as a column store index which is a different way of storing data. These other types will not be covered in this article as their uses and applications are advanced.
 
@@ -81,3 +97,4 @@ Some references are (SQL Server specific):
 - [Record size](https://www.red-gate.com/simple-talk/sql/database-administration/sql-server-storage-internals-101/)
 
 
+Here a great deal was covered on basics of indexes. Their use is essential in high performance relational database systems. Now how are indexes stored on disk was not covered because it is not the concern of this article nor is the same across RDBMSs.
